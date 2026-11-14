@@ -5,7 +5,8 @@ import components.standard.Standard;
 /**
  * An ordered list of nonblank task descriptions. Duplicates are allowed.
  *
- * @mathmodel type TaskListKernel is modeled by a sequence of strings
+ * @mathmodel type TaskListKernel is modeled by a finite sequence of nonnull,
+ *     nonblank strings
  * @initially this is the empty sequence
  */
 public interface TaskListKernel extends Standard<TaskList> {
@@ -13,7 +14,7 @@ public interface TaskListKernel extends Standard<TaskList> {
      * Returns a new empty list of the same implementation type.
      *
      * @return a fresh empty task list
-     * @ensures newInstance is empty and this = #this
+     * @ensures newInstance is fresh, empty, and has this dynamic type; this = #this
      */
     @Override
     TaskList newInstance();

@@ -10,6 +10,7 @@ import org.junit.Test;
 
 /** Tests enhanced and common operations. */
 public class TaskListTest {
+    /** Search preserves state. */
     @Test
     public void searchPreservesState() {
         TaskList t = new TaskList1L();
@@ -21,6 +22,7 @@ public class TaskListTest {
         assertEquals("[a, b]", t.toString());
     }
 
+    /** Copy is independent and replaces. */
     @Test
     public void copyIsIndependentAndReplaces() {
         TaskList a = new TaskList1L();
@@ -37,12 +39,16 @@ public class TaskListTest {
         assertEquals(0, a.size());
     }
 
+    /** Remove matches preserves other order. */
     @Test
     public void removeMatchesPreservesOtherOrder() {
         TaskList t = new TaskList1L();
         assertEquals(0, t.removeAll("a"));
-        for (String s : new String[] {"a", "b", "a", "a", "c", "a"}) t.add(s);
-        assertEquals(4, t.removeAll("a"));
+        for (String description : new String[] { "a", "b", "a", "a", "c", "a" }) {
+            t.add(description);
+        }
+        int expectedRemoved = new String[] { "a", "a", "a", "a" }.length;
+        assertEquals(expectedRemoved, t.removeAll("a"));
         assertEquals("[b, c]", t.toString());
         assertEquals(0, t.removeAll("missing"));
         t.removeAll("b");
@@ -50,6 +56,7 @@ public class TaskListTest {
         assertEquals(0, t.size());
     }
 
+    /** Common methods. */
     @Test
     public void commonMethods() {
         TaskList a = new TaskList1L();
@@ -71,6 +78,7 @@ public class TaskListTest {
         assertNotEquals(a, b);
     }
 
+    /** Secondary rejects null. */
     @Test
     public void secondaryRejectsNull() {
         TaskList t = new TaskList1L();

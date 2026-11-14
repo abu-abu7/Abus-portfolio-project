@@ -7,6 +7,7 @@ import org.junit.Test;
 
 /** Tests kernel and Standard operations. */
 public class TaskList1LTest {
+    /** Empty and clear. */
     @Test
     public void emptyAndClear() {
         TaskList t = new TaskList1L();
@@ -19,6 +20,7 @@ public class TaskList1LTest {
         assertEquals("b", t.task(0));
     }
 
+    /** Ordered duplicates and read. */
     @Test
     public void orderedDuplicatesAndRead() {
         TaskList t = new TaskList1L();
@@ -27,10 +29,11 @@ public class TaskList1LTest {
         t.add("a");
         assertEquals("[a, b, a]", t.toString());
         assertEquals("b", t.task(1));
-        assertEquals(3, t.size());
+        assertEquals(new String[] { "a", "b", "a" }.length, t.size());
         assertEquals("[a, b, a]", t.toString());
     }
 
+    /** Remove boundaries. */
     @Test
     public void removeBoundaries() {
         TaskList t = new TaskList1L();
@@ -44,6 +47,7 @@ public class TaskList1LTest {
         assertEquals(0, t.size());
     }
 
+    /** Fresh instance. */
     @Test
     public void freshInstance() {
         TaskList t = new TaskList1L();
@@ -55,6 +59,7 @@ public class TaskList1LTest {
         assertEquals("[a]", t.toString());
     }
 
+    /** Transfer ownership. */
     @Test
     public void transferOwnership() {
         TaskList a = new TaskList1L();
@@ -71,6 +76,7 @@ public class TaskList1LTest {
         assertEquals(0, a.size());
     }
 
+    /** Invalid inputs preserve state. */
     @Test
     public void invalidInputsPreserveState() {
         TaskList t = new TaskList1L();

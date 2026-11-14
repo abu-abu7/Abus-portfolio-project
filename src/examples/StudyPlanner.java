@@ -5,7 +5,9 @@ import components.tasklist.TaskList1L;
 
 /** A study checklist that removes tasks as they are finished. */
 public final class StudyPlanner {
-    private StudyPlanner() {}
+    /** Prevents creating instances of this demo class. */
+    private StudyPlanner() {
+    }
 
     /**
      * Creates a study plan and finishes the first task.

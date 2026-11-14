@@ -29,7 +29,8 @@ public interface TaskList extends TaskListKernel {
      * @return number of tasks removed
      * @updates this
      * @requires description != null
-     * @ensures all matching tasks are removed; other tasks retain their order
+     * @ensures removeAll is the number of matches in #this; all matching tasks
+     *     are removed and other tasks retain their order
      */
     int removeAll(String description);
 }

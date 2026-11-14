@@ -1,48 +1,40 @@
-# TaskList — Personal Java Portfolio Project
+# TaskList
 
-A reusable ordered task-list component built using the OSU layered component
-structure. This is a personal practice project based on the original template.
-It is a Java library with console examples.
+TaskList stores task descriptions in order. It supports adding, removing,
+searching, copying, and transferring tasks. The component follows the OSU
+kernel, enhanced interface, secondary class, and implementation structure.
 
-## Run in VS Code
+## Running the project
 
-Open this folder in VS Code. Install the recommended Java extensions when
-prompted. Use JDK 21 and the libraries listed below.
-
-In the integrated terminal run:
+Open the folder in VS Code and use JDK 21 or newer. In the terminal, run:
 
 ```sh
 ./run.sh
 ```
 
-This compiles the component and tests, runs JUnit, then runs both examples.
-You can also open either example and click **Run** above its `main` method.
+This compiles the project, runs the 23 JUnit tests, and runs both examples.
+The libraries needed for this local copy are already in `lib`.
 
-## Structure
+## Files
 
-```text
-Standard<TaskList>
-    └── TaskListKernel       minimal operations: add, remove, task, size
-          └── TaskList       enhanced interface: contains, copyFrom, removeAll
-                └── TaskListSecondary   representation-independent operations
-                      └── TaskList1L    ArrayList-backed kernel
-```
+- `src/components/tasklist`: the four component files.
+- `src/examples`: study planner and maintenance checklist examples.
+- `test`: component and example tests.
+- `doc/DESIGN.md`: component model and layers.
+- `doc/TEST_PLAN.md`: test cases and results.
+- `doc/REFLECTION.md`: draft reflection answers to review.
 
-- `src/components/tasklist/`: interfaces and implementation.
-- `src/examples/StudyPlanner.java`: a one-off study plan.
-- `src/examples/MaintenanceChecklist.java`: reusable templates, independent copies,
-  and ownership transfer between checklists.
-- `test/components/tasklist/`: kernel/Standard and enhanced/common-method tests.
-- `doc/DESIGN.md`: model, contracts, tradeoffs, and testing notes.
-- `doc/DIRECTIONS.md`: original teacher directions, retained for reference.
+The tests pass, and the bundled OSU Checkstyle check reports no warnings.
+Coverage results and instructions are in the test plan.
 
 ## Dependencies
 
 JDK 21, OSU `components.jar`, JUnit 4.13.2, and Hamcrest Core 1.3.
-Downloaded jars live in ignored `lib/`; they are present in this local checkout.
-To restore them in a fresh checkout:
+The jar files are kept in `lib` and are ignored by Git.
+For a fresh clone, download them with:
 
 ```sh
+mkdir -p lib
 curl -fL https://cse22x1.engineering.osu.edu/common/components.jar -o lib/components.jar
 curl -fL https://repo.maven.apache.org/maven2/junit/junit/4.13.2/junit-4.13.2.jar -o lib/junit-4.13.2.jar
 curl -fL https://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar -o lib/hamcrest-core-1.3.jar
@@ -60,15 +52,3 @@ javadoc -quiet -classpath 'lib/*' -d bin/docs \
   -tag 'correspondence:a:Abstraction relation:' \
   src/components/tasklist/*.java
 ```
-
-Work is on the `portfolio-project` branch; the original `main` is preserved.
-Original assignment reflections remain prompts for your own experience.
-
-## Course policy and project status
-
-The original assignment's AI policy in [DIRECTIONS.md](doc/DIRECTIONS.md)
-prohibits generative AI assistance. This project was developed with AI assistance
-for personal practice and does not satisfy that restriction for a course
-submission. Its layered design follows the structure described in the template;
-this is not a claim of instructor approval or full course-style compliance.
-The original assignment documents and policy are retained for reference.

@@ -4,8 +4,12 @@ import java.util.Objects;
 
 /** Shared TaskList methods implemented using the kernel operations. */
 public abstract class TaskListSecondary implements TaskList {
+    /** Multiplier used to combine task hashes in list order. */
+    private static final int HASH_MULTIPLIER = 31;
+
     /** Constructor for TaskList implementations. */
-    protected TaskListSecondary() {}
+    protected TaskListSecondary() {
+    }
 
     @Override
     public final boolean contains(String description) {
@@ -44,29 +48,22 @@ public abstract class TaskListSecondary implements TaskList {
 
     @Override
     public final boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof TaskList)) {
-            return false;
-        }
-        TaskList that = (TaskList) other;
-        if (this.size() != that.size()) {
-            return false;
-        }
-        for (int i = 0; i < this.size(); i++) {
-            if (!this.task(i).equals(that.task(i))) {
-                return false;
+        boolean equal = other == this;
+        if (!equal && other instanceof TaskList) {
+            TaskList that = (TaskList) other;
+            equal = this.size() == that.size();
+            for (int i = 0; equal && i < this.size(); i++) {
+                equal = this.task(i).equals(that.task(i));
             }
         }
-        return true;
+        return equal;
     }
 
     @Override
     public final int hashCode() {
         int result = 1;
         for (int i = 0; i < this.size(); i++) {
-            result = 31 * result + this.task(i).hashCode();
+            result = HASH_MULTIPLIER * result + this.task(i).hashCode();
         }
         return result;
     }

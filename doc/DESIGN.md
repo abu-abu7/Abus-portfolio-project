@@ -1,61 +1,55 @@
-# TaskList design
+# Component design
 
-## Scope and model
+## Model
 
-The abstract value is an ordered finite sequence of nonblank strings. Duplicate
-and Unicode descriptions are supported; exact matching is case-sensitive.
-Descriptions retain their original whitespace. Removing a task marks it done;
-this component does not store completion history, dates, IDs, or persistence.
+TaskList is a finite sequence of nonblank strings. Task order matters, and
+repeated descriptions are allowed. Matching is case-sensitive. Removing a task
+only removes its description; there is no stored completion history.
 
-A task tracker was chosen because it has a small useful kernel and supports
-separate workflows: a disposable study plan and reusable maintenance templates.
-An alternative design with priorities and dates was deferred to keep the model
-small enough to understand and test.
+## Layers
 
-## Layering and contracts
+```text
+Standard<TaskList>
+  └── TaskListKernel
+        └── TaskList
+              └── TaskListSecondary
+                    └── TaskList1L
+```
 
-TaskListKernel extends the real OSU Standard<TaskList>. TaskList extends that
-kernel. TaskListSecondary implements enhanced operations using only public
-kernel/Standard methods, with no access to the backing representation.
-TaskList1L supplies the kernel and Standard operations using ArrayList.
+| File | Purpose |
+| --- | --- |
+| TaskListKernel | Declares add, remove, task, size, and the Standard contracts |
+| TaskList | Declares contains, copyFrom, and removeAll |
+| TaskListSecondary | Implements enhanced methods plus equals, hashCode, and toString using the kernel |
+| TaskList1L | Stores the ArrayList and implements the kernel and Standard methods |
 
-The representation invariant is a nonnull list of nonnull, nonblank strings;
-the abstraction relation maps the backing list in order to the abstract sequence.
-Interface JavaDoc describes parameter modes and method contracts.
+## Representation and contracts
 
-Standard operations: newInstance returns a fresh empty TaskList1L; clear replaces
-the receiver with an empty sequence; transferFrom replaces the receiver with the
-source value and clears the source. Transfer requires a distinct TaskList1L and
-moves ownership of the backing list. copyFrom permits self-copy, preserves its
-source, and creates independent list storage. Strings themselves are immutable.
+The representation is an ArrayList of descriptions. The list and its entries
+must be nonnull, and entries must not be blank. Its entries, in order, are the
+abstract value of the component.
 
-Null parameters raise NullPointerException; blank additions and invalid transfer
-sources raise IllegalArgumentException; invalid indices raise
-IndexOutOfBoundsException. Rejected kernel calls preserve state.
+- `newInstance` returns a separate empty list of the same implementation type.
+- `clear` makes the list empty.
+- `transferFrom` moves the source's value into the receiver and clears the source.
+  The source must be a different object of the same implementation type.
+- `copyFrom` copies the source without changing it. Self-copy is allowed.
+- `equals` compares task values and order. Equal lists have equal hash codes.
 
-Equality compares ordered contents of TaskList implementations; hashCode follows
-the same ordered model. toString prints bracketed descriptions for debugging.
-Instances are mutable and not thread-safe; do not mutate an instance while it is
-used as a hash-map key.
+Null inputs, blank additions, and invalid indices are rejected. Method contracts
+and parameter modes are documented in the interfaces.
 
-## Complexity
+## Use cases
 
-For n tasks: indexed read and size are O(1); append is amortized O(1); indexed
-removal is O(n). Search, copy, equality, hashing, and rendering are O(n).
-removeAll can be O(n squared) due to repeated ArrayList shifts. This is acceptable
-for small personal checklists; a future kernel could support bulk filtering.
+StudyPlanner uses TaskList directly to create a study plan and remove finished
+work.
 
-## Validation
+MaintenanceChecklist uses a private TaskList as its representation. It copies a
+template, adds steps, finishes the next step, and returns copies of pending work.
+Two maintenance jobs can use the same template without affecting each other.
 
-Eleven JUnit tests cover empty/nonempty state, repeated descriptions, ordered
-reads, first/middle/last removal, clear/reuse, fresh instances, transfer/reset and
-independence, copy/self-copy, missing and repeated matches, equality/hashCode,
-rendering, and rejected inputs with state preservation. Both console examples
-are compiled and executed by run.sh. The suite is a baseline, not a claim of
-exhaustive coverage or conformance to a particular course Checkstyle rubric.
+## Limits
 
-## Personal reflection
-
-The teacher's original reflection prompts are retained in DIRECTIONS.md. Fill
-those in after exploring the code and making your own changes; no personal
-learning history has been invented for you.
+Tasks are kept in memory. The component does not save files or track deadlines.
+Reading a task is O(1), removal is O(n), and searching is O(n). Removing all
+matches can take O(n²) because ArrayList shifts entries after removal.
