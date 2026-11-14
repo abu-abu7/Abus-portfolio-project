@@ -1,89 +1,74 @@
-# Portfolio Project
+# TaskList — Personal Java Portfolio Project
 
-The purpose of this repo is to provide a framework for creating your own
-component in the software sequence discipline. If you were unsure whether
-or not to make your own, consider the following testimonial:
+A reusable ordered task-list component built using the OSU layered component
+structure. This is a personal practice project based on the original template.
+It is a Java library with console examples.
 
-> I really enjoyed the portfolio project! It gave me a stronger understanding
-> of the OSU software discipline while also giving me the flexibility to
-> design something that reflected my interests. This made the experience
-> rewarding and enjoyable as I created a product I was proud of!
+## Run in VS Code
 
-## Recommended Steps to Get Started
+Open this folder in VS Code. Install the recommended Java extensions when
+prompted. Use JDK 21 and the libraries listed below.
 
-When starting your portfolio project, the following steps should make your life
-a bit easier.
+In the integrated terminal run:
 
-### Step 1: Create a Repo From This Template
+```sh
+./run.sh
+```
 
-<!-- TODO: use GitHub to create a repo from this template -->
+This compiles the component and tests, runs JUnit, then runs both examples.
+You can also open either example and click **Run** above its `main` method.
 
-Assuming you're reading this README from GitHub, you can make use of this
-repo by clicking the `Use this template` button in the top-right corner of
-this page. If you can't find the button, [this link][use-this-template]
-should work as well. Personally, I would recommend using the
-`Create a new repository` option, which will allow you to name the
-repository after your component. Given that you will be submitting pull
-requests to me through Carmen, you'll want to make sure your repository
-is public. Then, you can click `Create repository`. After that, you can
-go through all the usual steps of cloning a repository on your system to
-get to work. I use GitHub Desktop to clone projects, and it has a nice
-feature of letting you open a repo directly in VSCode from the
-`Repository` menu.
+## Structure
 
-### Step 2: Install Recommended Plugins
+```text
+Standard<TaskList>
+    └── TaskListKernel       minimal operations: add, remove, task, size
+          └── TaskList       enhanced interface: contains, copyFrom, removeAll
+                └── TaskListSecondary   representation-independent operations
+                      └── TaskList1L    ArrayList-backed kernel
+```
 
-<!-- TODO: install recommended plugins and delete this comment -->
+- `src/components/tasklist/`: interfaces and implementation.
+- `src/examples/StudyPlanner.java`: a one-off study plan.
+- `src/examples/MaintenanceChecklist.java`: reusable templates, independent copies,
+  and ownership transfer between checklists.
+- `test/components/tasklist/`: kernel/Standard and enhanced/common-method tests.
+- `doc/DESIGN.md`: model, contracts, tradeoffs, and testing notes.
+- `doc/DIRECTIONS.md`: original teacher directions, retained for reference.
 
-When you open VSCode with this project, you should get a notification in the
-bottom right corner that there are some recommended extensions to install.
-Click install all. If you ignored this message or it never came up, feel free
-to press CTRL+SHIFT+P and type "Show Recommended Extensions". Install all of the
-extensions listed.
+## Dependencies
 
-### Step 3: Install the Latest JDK
+JDK 21, OSU `components.jar`, JUnit 4.13.2, and Hamcrest Core 1.3.
+Downloaded jars live in ignored `lib/`; they are present in this local checkout.
+To restore them in a fresh checkout:
 
-<!-- TODO: install latest JDK and delete this comment -->
+```sh
+curl -fL https://cse22x1.engineering.osu.edu/common/components.jar -o lib/components.jar
+curl -fL https://repo.maven.apache.org/maven2/junit/junit/4.13.2/junit-4.13.2.jar -o lib/junit-4.13.2.jar
+curl -fL https://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar -o lib/hamcrest-core-1.3.jar
+```
 
-If you do not have an available JDK on your system, you may be prompted to
-install one by VSCode. The default seems to be Red Hat's OpenJDK, which seems to
-require you to register for an account or to install on the command line.
-Regardless, there is no mac support. As a result, I would just recommend
-installing the latest JDK [directly from Oracle's site][jdk-downloads].
+## API documentation
 
-### Step 4: Add Key Libraries to Project
+```sh
+javadoc -quiet -classpath 'lib/*' -d bin/docs \
+  -tag 'mathmodel:a:Mathematical model:' -tag 'initially:a:Initially:' \
+  -tag 'requires:a:Requires:' -tag 'ensures:a:Ensures:' \
+  -tag 'updates:a:Updates:' -tag 'replaces:a:Replaces:' \
+  -tag 'clears:a:Clears:' \
+  -tag 'convention:a:Representation invariant:' \
+  -tag 'correspondence:a:Abstraction relation:' \
+  src/components/tasklist/*.java
+```
 
-<!-- TODO: add key libraries to project and delete this comment -->
+Work is on the `portfolio-project` branch; the original `main` is preserved.
+Original assignment reflections remain prompts for your own experience.
 
-As you are probably all aware at this point, you need the components jar to get
-anything running. My advice is to [download it from here][components-jar]. Then,
-drop it into the `lib` folder in the project. Git automatically ignores anything
-you put here by default, so don't worry about committing it to version control.
+## Course policy and project status
 
-Similarly, you will need the testing APIs (e.g., JUnit). Perhaps the easiest way
-to include them in your project is to click the beaker symbol in the left
-sidebar; it's right below the extensions button which looks like four squares.
-If you do not see this button, try creating a Java file in `src`. From there,
-you can click "Enable Java Tests" and then click "JUnit" from the
-dropdown. That's it! You should now see the two JUnit libraries in the lib
-folder.
-
-**Note**: if you're using VSCode for class projects, you might be wondering
-why you never had to do this. In general, it's bad practice to commit binaries
-to version control. However, we have no way of managing dependencies with the
-custom `components.jar`, so I included them directly in the template. I did not
-include them here, so you could see how it might be done from scratch. If at any
-point you're struggling with Step 3, just copy the lib folder from the monorepo
-template.
-
-## Next Steps
-
-<!-- TODO: navigate to doc/DIRECTIONS.md and delete this comment -->
-
-Now that you have everything setup, you can begin crafting your component. All
-of the directions you need to get started are in the
-[DIRECTIONS.md](doc\DIRECTIONS.md) file under the docs folder.
-
-[components-jar]: https://cse22x1.engineering.osu.edu/common/components.jar
-[jdk-downloads]: https://www.oracle.com/java/technologies/downloads/
-[use-this-template]: https://github.com/new?template_name=portfolio-project&template_owner=jrg94
+The original assignment's AI policy in [DIRECTIONS.md](doc/DIRECTIONS.md)
+prohibits generative AI assistance. This project was developed with AI assistance
+for personal practice and does not satisfy that restriction for a course
+submission. Its layered design follows the structure described in the template;
+this is not a claim of instructor approval or full course-style compliance.
+The original assignment documents and policy are retained for reference.
